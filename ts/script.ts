@@ -29,6 +29,8 @@ var l_Draw =  new GameLoop();  //The loop for drawing
 
 //The main update loop
 var MainUpdate = function () {
+    GD.ctx.clearRect(0, 0, GD.WIDTH, GD.HEIGHT);
+    
     exeDelegate(l_Update);
     exeDelegate(l_Draw, GD.ctx);
 } 
@@ -42,7 +44,6 @@ class GD {
     static ctx : any;
 
     static frameCount : number;
-
     private self : any;
 
     constructor () { this.self = this; }
@@ -70,7 +71,7 @@ function loadCanvas(name : string, size : Vector2) {
     GD.c.style.outline = 'dashed';
 }
 
-loadCanvas('mainCanvas', new Vector2(600, 800));
+loadCanvas('mainCanvas', new Vector2(window.innerWidth / 1.015, window.innerHeight/1.015));
 
 window.addEventListener('load', () => {
     //---Starting start :)---\\

@@ -8,15 +8,12 @@ class GameObject {
     }
     addToArray() {
         GameObject.objects.push(this);
-        console.log(this);
     }
     static GetGameobjectOfType(type) {
-        let returnArray;
+        let returnArray = [];
         GameObject.objects.forEach((obj) => {
-            console.log(obj.type, obj);
             if (obj.type == type) {
                 returnArray.push(obj);
-                console.log(obj);
             }
         });
         return returnArray;

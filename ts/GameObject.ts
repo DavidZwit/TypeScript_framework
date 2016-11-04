@@ -12,24 +12,21 @@ class GameObject {
 
         this.type = type || ObjectTypes.Empty;
         this.name = name;
-
     }
 
     addToArray () {
         GameObject.objects.push (this);
-        console.log(this);
     }
 
-    static GetGameobjectOfType<T extends GameObject> (type : ObjectTypes) : [ T ] {
+    static GetGameobjectOfType<T extends GameObject> (type : ObjectTypes) : T[] {
 
-        let returnArray : [T];
+        let returnArray : T[] = [];
 
         GameObject.objects.forEach( (obj : GameObject) => {
             
-            console.log(obj.type, obj);
             
-            if (obj.type == type) { returnArray.push(obj as T);
-                console.log(obj);
+            if (obj.type == type) { 
+                returnArray.push(obj as T);
             }
         });
 

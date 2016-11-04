@@ -13,23 +13,24 @@ class Light extends GameObject {
     }
 }
 
-/*
-l_Draw.addFunction(2, ( ctx ) => {
-    console.log( GameObject.GetGameobjectOfType<Light>(ObjectTypes.Light) );
+
+l_Draw.addFunction(2, ( params ) => {
+    let ctx = params[0];
 
     GameObject.GetGameobjectOfType <Light> (ObjectTypes.Light).forEach((light) => {
-        
-        let grd = ctx.createRadialGradient(light.position.x, light.position.y, 1, light.position.x, light.position.y, light.intencity);
-        grd.addColorStop(1, light.color.asString);
-        grd.addColorStop(1,"white");
-        
-        ctx.fillStyle = grd;
-        ctx.fill();
+
+        var grd=ctx.createRadialGradient(light.position.x, light.position.y, 0, light.position.x, light.position.y, light.intencity);
+        grd.addColorStop(0,"red");
+        grd.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        // Fill with gradient
+        ctx.fillStyle=grd;
+        ctx.fillRect(0, 0,  GD.WIDTH, GD.HEIGHT);
 
     });
     return 0;
 }, "lightDraw")
-*/
+
 
 class lightTesting extends Seed {
 
@@ -38,12 +39,12 @@ class lightTesting extends Seed {
     constructor (name: string) {
         super(name);
 
-        console.log("yes it's working");
-        this.theLight = new Light("mainLight", new Vector2(200, 200), 20);
+        this.theLight = new Light("mainLight", new Vector2(GD.WIDTH / 2, GD.HEIGHT / 2), 400);
         this.theLight.addToArray();
     }
 
     Update () : number {
+        
         return 0;
     }
 }
