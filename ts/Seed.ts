@@ -2,27 +2,36 @@
 *   The base class to make classes alive 
 */
 class Seed {
-    EarlyUpdate () : number {
-        return 0;
-    }
 
-    Update () : number {
-        return 0;
-    }
+    public EarlyUpdate : () => {};
+    public Update : () => {};
+    public LateUpdate : () => {};
+    public Start : () => {};
 
-    LateUpdate () : number {
-        return 0;
-    }
+    protected self : any;
 
-    Start () : number {
-        return 0;
-    }
-    
+    static seeds : [ Seed ];
+
     constructor (name : string) {
+        this.EarlyUpdate = () => {return 0;}
+        this.Update = () => {return 0;}
+        this.LateUpdate = () => {return 0;}
+        this.Start = () => {return 0;}
+        
 
-        l_Update.addFunction(0, this.EarlyUpdate, name + "go");
-        l_Update.addFunction(1, this.Update, name + "go");
-        l_Update.addFunction(2, this.LateUpdate, name + "go");
+        this.self = this;
+
+    }
+
+    static addSeed (newSeed : Seed) {
+        if (Seed.seeds == null) Seed.seeds = [new Seed('first')];
+        Seed.seeds.push (newSeed);
+        
+        l_Update.addFunction(0, newSeed.EarlyUpdate, name + "_GameObjectgo");
+        l_Update.addFunction(1, newSeed.Update, name + "_GameObject");
+        l_Update.addFunction(2, newSeed.LateUpdate, name + "_GameObject");
+
+        l_Start.addFunction(1, newSeed.Start, name + "_GameObject");
 
     }
 

@@ -8,20 +8,11 @@ function exeDelegate(obj, ...param) {
         }
     }
 }
-class GameLoop {
-    constructor() {
-        this.objArray = [{}, {}, {}];
-    }
-    addFunction(pass, func, name) {
-        this.objArray[pass][name] = func;
-    }
-}
-var l_Update = new GameLoop(); //The loop for updating game logic 
-var l_Start = new GameLoop(); //The array that gets called at the start
-var l_Draw = new GameLoop(); //The loop for drawing
 //The main update loop
 var MainUpdate = function () {
     GD.ctx.clearRect(0, 0, GD.WIDTH, GD.HEIGHT);
+    //collision
+    exeDelegate(l_Physics);
     exeDelegate(l_Update);
     exeDelegate(l_Draw, GD.ctx);
 };
@@ -30,16 +21,22 @@ class GD {
     constructor() {
         this.self = this;
     }
-    set width(newWidth) {
+    static get StageFriction() {
+        return .002;
+    }
+    static get color() {
+        return new Color(225, 0, 225);
+    }
+    static set width(newWidth) {
         GD.WIDTH = newWidth;
         GD.c.width = newWidth;
     }
-    get width() { return GD.WIDTH; }
-    set height(newHeight) {
+    static get width() { return GD.WIDTH; }
+    static set height(newHeight) {
         GD.HEIGHT = newHeight;
         GD.c.height = newHeight;
     }
-    get height() { return GD.HEIGHT; }
+    static get height() { return GD.HEIGHT; }
 }
 function loadCanvas(name, size) {
     GD.c = document.getElementById(name);
@@ -48,15 +45,27 @@ function loadCanvas(name, size) {
     GD.c.height = GD.HEIGHT = size.y;
     GD.c.style.outline = 'dashed';
 }
+window.addEventListener('resize', () => {
+    GD.width = window.innerWidth;
+    GD.height = window.innerHeight;
+});
 loadCanvas('mainCanvas', new Vector2(window.innerWidth / 1.015, window.innerHeight / 1.015));
 window.addEventListener('load', () => {
     //---Starting start :)---\\
+    GD.frameCount = 0;
+    let startGame = Date.now();
+    GD.gameTime = 0;
+    GD.lastFrameTime = startGame - Date.now();
+    GD.deltaTime = 0;
     exeDelegate(l_Start);
     //---Starting loop---\\
     !function loop() {
+        GD.gameTime = (Date.now() - startGame) / 100;
+        GD.deltaTime = GD.gameTime - GD.lastFrameTime;
         GD.frameCount++;
         MainUpdate();
         window.requestAnimationFrame(loop);
+        GD.lastFrameTime = GD.gameTime;
     }();
 });
 //# sourceMappingURL=script.js.map

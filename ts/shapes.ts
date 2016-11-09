@@ -10,12 +10,3 @@ class cube extends GameObject {
         this.size = size;
     }
 }
-
-l_Draw.addFunction(0, () => {
-
-    array.forEach(element => {
-        
-    });
-
-    return 0;
-}, "DrawShapesFunction");

@@ -33,6 +33,27 @@ class Vector2 {
         this.x -= other.x;
         this.y -= other.y;
     }
+
+    devideInt (value : number) {
+        if (value != NaN) {
+            this.x /= value;
+            this.y /= value;
+        }
+    }
+
+    multiplyInt (value : number) {
+        if (value != NaN) {
+            this.x *= value;
+            this.y *= value;
+        }
+    }
+
+    static multiplyInt (v1, value : number) : Vector2 {
+        if (value != NaN) {
+            return new Vector2(v1.x *= value,
+                                v1.y *= value);
+        }
+    }
 }
 
 /**
@@ -52,7 +73,7 @@ class Color {
         this.a = a || 0;
     }
 
-    get asString () : string {
+    get toString () : string {
         return 'rgba(' + this.r * 225 + ',' + this.g * 225 + ',' + this.b * 225 + ',' + this.a + ')';
     }
 

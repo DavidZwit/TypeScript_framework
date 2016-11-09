@@ -20,6 +20,23 @@ class Vector2 {
         this.x -= other.x;
         this.y -= other.y;
     }
+    devideInt(value) {
+        if (value != NaN) {
+            this.x /= value;
+            this.y /= value;
+        }
+    }
+    multiplyInt(value) {
+        if (value != NaN) {
+            this.x *= value;
+            this.y *= value;
+        }
+    }
+    static multiplyInt(v1, value) {
+        if (value != NaN) {
+            return new Vector2(v1.x *= value, v1.y *= value);
+        }
+    }
 }
 /**
  * color handeling
@@ -31,7 +48,7 @@ class Color {
         this.b = b || 0;
         this.a = a || 0;
     }
-    get asString() {
+    get toString() {
         return 'rgba(' + this.r * 225 + ',' + this.g * 225 + ',' + this.b * 225 + ',' + this.a + ')';
     }
     static add(self, other) {
@@ -53,4 +70,4 @@ class Color {
         this.a -= other.a;
     }
 }
-//# sourceMappingURL=vector.js.map
+//# sourceMappingURL=Vector.js.map
