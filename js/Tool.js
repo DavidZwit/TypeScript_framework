@@ -6,4 +6,4 @@ class Tool {
     instantiate() {
     }
 }
-//# sourceMappingURL=Seed.js.map
+//# sourceMappingURL=Tool.js.map

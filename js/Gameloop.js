@@ -21,4 +21,4 @@ class GameLoop {
         }
     }
 }
-//# sourceMappingURL=GameLoopsScenes.js.map
+//# sourceMappingURL=Gameloop.js.map

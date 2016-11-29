@@ -1,3 +1,7 @@
+/*
+*The class to read inputs from
+*/
+
 class Input {
 
     private keysDown : [boolean];

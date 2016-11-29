@@ -1,3 +1,7 @@
+/*
+* Here all the enums get stored
+*/
+
 enum ObjectTypes {
     Empty,
     Light,
@@ -19,6 +23,9 @@ enum drawLayers {
     ui
 }
 
+/*
+*The functions objects will extend from to be drawName
+*/
 class DrawFunctions {
     static circle () : (ctx, trans, pen) => {} {
 

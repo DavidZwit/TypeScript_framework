@@ -1,21 +1,7 @@
-class Tool {
-    gameobject : GameObject;
-    name : string;
-
-    constructor (gameobject : GameObject, name : string) {
-        this.gameobject = gameobject;
-        this.name = name;
-    }
-
-    instantiate () {
-
-    }
-}
-
-
 /**
-*   The base class to make classes alive
+*   Class to extend from if you want a script to add to an object
 */
+
 class Script extends Tool {
     public name : string;
 

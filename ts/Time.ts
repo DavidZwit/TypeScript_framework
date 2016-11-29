@@ -1,4 +1,7 @@
-//Game Data
+/*
+*Time variables
+*/
+
 class Time {
     static deltaTime : number;
     static gameTime : number;

@@ -1,3 +1,7 @@
+/*
+*The class that handles drawing the object
+*/
+
 class Pencile extends Tool {
 
     public color: Color;
