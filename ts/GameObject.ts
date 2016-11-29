@@ -10,36 +10,48 @@ class GameObject {
     public transform : Transform;
     public physics : PhysicsBody;
 
-    static objects = [];
+    private tools : any = {transform: null, pencile: null, physics: null};
+
+    //The scene it is loaded in
+    public stage : Stage;
 
     constructor( type : ObjectTypes, name : string, transform : Transform = null, pencile : Pencile = null, physicsbody : PhysicsBody = null) {
 
         this.type = type || ObjectTypes.Empty;
         this.name = name;
-        
+
         this.transform = transform || new Transform(this);
-        this.physics = physicsbody || new PhysicsBody(this);
         this.pencile = pencile || new Pencile(this);
+
+        this.physics = physicsbody || new PhysicsBody(this);
     }
 
-    static Instantiate <T extends GameObject> (obj : GameObject, trans : Transform) {
+
+    GetComponent () {
+
+    }
+
+    AddComponent (component : Tool) {
+        this.tools[component.name] = component;
+    }
+
+    static Instantiate <T extends GameObject> (obj : GameObject, stage : Stage = game.currentStage) {
         if (!GameObject.Find(obj)) {
 
-            obj.transform = trans;
             obj.pencile.draw = true;
-            GameObject.objects.push(obj);
+            game.currentStage.gameobjects.push(obj);
 
-        } 
-    } 
+        }
+    }
 
     static Find (obj : GameObject) {
-        for (let i = GameObject.objects.length -1; i > 0; i--) {
-            if (GameObject.objects[i].name == obj.name) return i; 
+        for (let i = game.currentStage.gameobjects.length -1; i > 0; i--) {
+            if (game.currentStage.gameobjects[i].name == obj.name) return i;
         }
     }
 
     static Destroy (obj : GameObject) {
-        GameObject.objects.splice( GameObject.Find(obj) );
+        game.currentStage.gameobjects.splice( GameObject.Find(obj) );
         obj.pencile.draw = false;
     }
 
@@ -47,9 +59,9 @@ class GameObject {
 
         let returnArray : T[] = [];
 
-        GameObject.objects.forEach( (obj : GameObject) => {
-            
-            if (obj.type == type) { 
+        game.currentStage.gameobjects.forEach( (obj : GameObject) => {
+
+            if (obj.type == type) {
                 returnArray.push(obj as T);
             }
         });

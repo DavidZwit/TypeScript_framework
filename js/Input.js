@@ -1,24 +1,4 @@
 class Input {
-    constructor() {
-        this.keysDown = [false];
-        for (let i = 0; i < 222; i++)
-            this.keysDown.push(false);
-        this.keysUp = [0];
-        this.keysPressed = [0];
-        window.addEventListener('keydown', this.KeyDown);
-        window.addEventListener('keyup', this.KeyUp);
-        window.addEventListener('mousedown', this.MouseDown);
-        window.addEventListener('mouseup', this.MouseUp);
-        window.addEventListener('mousemove', this.MouseMove);
-        l_Update.addFunction(2, () => {
-            this.keysUp = [0];
-            this.keysPressed = [0];
-            return 0;
-        }, "InputCanceler");
-    }
-    //--------------\\
-    //Keyboard buttons
-    //--------------\\    
     static getKeyPress(keycode) {
         for (let i = s_InputsListener.keysPressed.length - 1; i > 0; i--)
             if (s_InputsListener.keysPressed[i] == keycode)
@@ -39,6 +19,23 @@ class Input {
     }
     static get anyKeyUp() {
         return s_InputsListener.keysUp.length > 1 ? true : false;
+    }
+    constructor() {
+        this.keysDown = [false];
+        for (let i = 0; i < 222; i++)
+            this.keysDown.push(false);
+        this.keysUp = [0];
+        this.keysPressed = [0];
+        window.addEventListener('keydown', this.KeyDown);
+        window.addEventListener('keyup', this.KeyUp);
+        window.addEventListener('mousedown', this.MouseDown);
+        window.addEventListener('mouseup', this.MouseUp);
+        window.addEventListener('mousemove', this.MouseMove);
+        game.l_Input.addFunction(2, () => {
+            this.keysUp = [0];
+            this.keysPressed = [0];
+            return 0;
+        }, "InputCanceler");
     }
     KeyDown(e) {
         if (s_InputsListener.keysDown[e.keyCode] == false) {

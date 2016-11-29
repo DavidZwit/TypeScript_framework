@@ -1,38 +1,54 @@
-/**
-*   The base class to make classes alive 
-*/
-class Seed {
+class Tool {
+    gameobject : GameObject;
+    name : string;
 
-    public EarlyUpdate : () => {};
-    public Update : () => {};
-    public LateUpdate : () => {};
-    public Start : () => {};
-
-    protected self : any;
-
-    static seeds : [ Seed ];
-
-    constructor (name : string) {
-        this.EarlyUpdate = () => {return 0;}
-        this.Update = () => {return 0;}
-        this.LateUpdate = () => {return 0;}
-        this.Start = () => {return 0;}
-        
-
-        this.self = this;
-
+    constructor (gameobject : GameObject, name : string) {
+        this.gameobject = gameobject;
+        this.name = name;
     }
 
-    static addSeed (newSeed : Seed) {
-        if (Seed.seeds == null) Seed.seeds = [new Seed('first')];
-        Seed.seeds.push (newSeed);
-        
-        l_Update.addFunction(0, newSeed.EarlyUpdate, name + "_GameObjectgo");
-        l_Update.addFunction(1, newSeed.Update, name + "_GameObject");
-        l_Update.addFunction(2, newSeed.LateUpdate, name + "_GameObject");
+    instantiate () {
 
-        l_Start.addFunction(1, newSeed.Start, name + "_GameObject");
+    }
+}
 
+
+/**
+*   The base class to make classes alive
+*/
+class Script extends Tool {
+    public name : string;
+
+    constructor (gameobject : GameObject, name : string) {
+        super(gameobject, name + "_Script");
+    }
+
+    Awake() {
+        return 0;
+    }
+
+    Start() {
+        return 0;
+    }
+
+    EarlyUpdate () {
+        return 0;
+    }
+
+    Update () {
+        return 0;
+    }
+
+    LateUpdate() {
+        return 0;
+    }
+
+    instantiate () {
+        this.gameobject.stage.l_Update.addFunction(0, this.EarlyUpdate, this.gameobject.name + "_ScriptEarly");
+        this.gameobject.stage.l_Update.addFunction(1, this.Update, this.gameobject.name + "_ScriptUpdate");
+        this.gameobject.stage.l_Update.addFunction(2, this.LateUpdate, this.gameobject.name + "_ScriptLate");
+
+        this.gameobject.stage.l_Start.addFunction(1, this.Start, this.gameobject.name + "_ScriptStart");
     }
 
 }

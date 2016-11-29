@@ -1,43 +1,49 @@
-class Pencile {
+class Pencile extends Tool {
     constructor(gameobject, color = new Color(1, 0, 1, 1)) {
-        this.gameobject = gameobject;
-        this.draw = false;
+        super(gameobject, "pencile");
         this.drawLayer = 1;
+        this.shape = ShapeTypes.circle;
+        this.draw = false;
+        this.doStroke = true;
+        this.doFill = true;
         this.color = color;
-        this.shape = (ctx) => {
-            ctx.beginPath();
-            ctx.arc(this.gameobject.transform.position.x, this.gameobject.transform.position.y, this.gameobject.transform.size.x, 0, 2 * Math.PI);
-            ctx.fillStyle = this.color.toString;
-            ctx.fill();
+        this.drawFunc = DrawFunctions.circle();
+    }
+    DrawLoop(theVar) {
+        if (this.draw == true) {
+            let ctx = theVar[0].ctx;
+            this.drawFunc(ctx, this.gameobject.transform, this);
+        }
+        return 0;
+    }
+    DrawPivot(vars) {
+        if (this.drawPivot == true) {
+            let ctx = vars[0];
+            let trans = this.gameobject.transform;
+            ctx.arc(trans.drawPosition.x, trans.drawPosition.y, 2, 0, 2 * Math.PI);
             ctx.stroke();
             return 0;
-        };
-        this.mainDraw = (theVar) => {
-            let ctx = theVar[0];
-            if (this.draw == true)
-                this.shape(ctx, gameobject.transform);
+        }
+    }
+    DrawName(vars) {
+        if (this.drawName == true) {
+            let ctx = vars[0];
+            let trans = this.gameobject.transform;
+            let name = this.gameobject.name;
+            ctx.fillStyle = this.color.toString;
+            ctx.font = "bold 12px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(name, trans.drawPosition.x, trans.drawPosition.y - trans.drawSize.y);
             return 0;
-        };
-        l_Draw.addFunction(this.drawLayer, this.mainDraw, gameobject.name + "_GameObject");
-    }
-    set drawName(input) {
-        if (input == true) {
-            l_Draw.addFunction(2, (vars) => {
-                let ctx = vars[0];
-                let trans = this.gameobject.transform;
-                let name = this.gameobject.name;
-                ctx.fillStyle = "black";
-                ctx.font = "bold 12px Arial";
-                ctx.fillText(name, trans.position.x - trans.size.x / 3, trans.position.y - trans.size.y / 4);
-                return 0;
-            }, this.gameobject.name + "_NameTag");
-        }
-        else {
-            l_Draw.removeFunction(2, this.gameobject.name + "_NameTag");
         }
     }
-    changeShape(newShape) {
-        this.shape = newShape;
+    instantiate() {
+        this.gameobject.stage.l_Draw.addFunction(this.drawLayer, this.DrawLoop, this.gameobject.name + "_GameObject");
+        this.gameobject.stage.l_Draw.addFunction(3, this.DrawPivot, this.gameobject.name + "_Pivot");
+        this.gameobject.stage.l_Draw.addFunction(3, this.DrawName, this.gameobject.name + "_NameTag");
+    }
+    changeDrawFunc(newShape) {
+        this.drawFunc = newShape;
     }
 }
 //# sourceMappingURL=Pencile.js.map

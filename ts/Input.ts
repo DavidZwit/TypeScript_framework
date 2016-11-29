@@ -10,7 +10,7 @@ class Input {
 
     //--------------\\
     //Keyboard buttons
-    //--------------\\    
+    //--------------\\
 
     static getKeyPress (keycode:number) : boolean {
         for (let i = s_InputsListener.keysPressed.length -1; i > 0; i--)
@@ -44,7 +44,7 @@ class Input {
         for ( let i = 0; i < 222; i++ ) this.keysDown.push(false);
 
         this.keysUp = [0];
-        this.keysPressed = [0]; 
+        this.keysPressed = [0];
 
         window.addEventListener('keydown', this.KeyDown);
         window.addEventListener('keyup', this.KeyUp);
@@ -53,7 +53,7 @@ class Input {
         window.addEventListener('mouseup', this.MouseUp);
         window.addEventListener('mousemove', this.MouseMove);
 
-        l_Update.addFunction(2, () => {
+        game.l_Input.addFunction(2, () => {
 
             this.keysUp = [0];
             this.keysPressed = [0];
@@ -68,7 +68,7 @@ class Input {
             s_InputsListener.keysDown[e.keyCode] = true;
             s_InputsListener.keysPressed.push(e.keyCode)
 
-        } 
+        }
     }
 
     KeyUp (e) {

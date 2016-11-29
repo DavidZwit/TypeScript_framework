@@ -1,73 +1,84 @@
-class Pencile {
+class Pencile extends Tool {
 
-    public color : Color;
-    public draw : boolean;
+    public color: Color;
+    public draw: boolean;
+    public shape: ShapeTypes;
 
-    private shape : (ctx, transform) => {};
-    private gameobject : GameObject;
-    public drawLayer : number;
+    public doStroke: boolean;
+    public doFill: boolean;
 
-    private mainDraw : (any) => {};
+    public drawPivot: boolean;
+    public drawName: boolean;
 
-    constructor (gameobject : GameObject, color : Color = new Color(1, 0, 1, 1) ) {
+    private drawFunc: (ctx, transform: Transform, pen: Pencile) => {};
+    public drawLayer: number;
 
-        this.gameobject = gameobject;
+    constructor(gameobject: GameObject, color: Color = new Color(1, 0, 1, 1)) {
+
+        super(gameobject, "pencile");
+
+        this.drawLayer = 1;
+        this.shape = ShapeTypes.circle;
 
         this.draw = false;
-        this.drawLayer = 1;
+        this.doStroke = true;
+        this.doFill = true;
 
         this.color = color;
 
-        this.shape = (ctx) => {
+        this.drawFunc = DrawFunctions.circle();
+    }
 
-            ctx.beginPath();
-            ctx.arc(this.gameobject.transform.position.x, this.gameobject.transform.position.y, 
-                    this.gameobject.transform.size.x, 0, 2 * Math.PI);
+    DrawLoop(theVar) {
+        if (this.draw == true) {
+            let ctx = theVar[0].ctx;
+
+            this.drawFunc(ctx, this.gameobject.transform, this);
+        }
+        return 0;
+    }
+
+    DrawPivot(vars) {
+        if (this.drawPivot == true) {
+            let ctx = vars[0];
+            let trans = this.gameobject.transform;
+
+            ctx.arc(trans.drawPosition.x,
+                trans.drawPosition.y,
+                2, 0, 2 * Math.PI);
+
+            ctx.stroke();
+            return 0;
+        }
+    }
+
+    DrawName(vars) {
+        if (this.drawName == true) {
+            let ctx = vars[0];
+            let trans = this.gameobject.transform;
+            let name = this.gameobject.name;
 
             ctx.fillStyle = this.color.toString;
-            ctx.fill();
-            ctx.stroke();
-            
-            return 0;
+            ctx.font = "bold 12px Arial";
+            ctx.textAlign = "center";
 
-        };
-
-       
-        this.mainDraw = (theVar) => {
-            let ctx = theVar[0];
-
-            if (this.draw == true) this.shape(ctx, gameobject.transform);
+            ctx.fillText(name,
+                trans.drawPosition.x,
+                trans.drawPosition.y - trans.drawSize.y
+            );
 
             return 0;
         }
-
-        l_Draw.addFunction(this.drawLayer, this.mainDraw, gameobject.name + "_GameObject");
     }
 
-    set drawName (input : boolean) {
-        
-        if (input == true) {
-            l_Draw.addFunction(2, (vars) => {
-                let ctx = vars[0];
-                let trans = this.gameobject.transform;
-                let name = this.gameobject.name;
-
-                ctx.fillStyle = "black";
-                ctx.font = "bold 12px Arial";
-                    
-                ctx.fillText( name, 
-                    trans.position.x - trans.size.x / 3, 
-                    trans.position.y - trans.size.y / 4
-                );
-
-                return 0;
-            }, this.gameobject.name + "_NameTag");
-        } else {
-            l_Draw.removeFunction(2, this.gameobject.name + "_NameTag");
-        }
+    instantiate() {
+        this.gameobject.stage.l_Draw.addFunction(this.drawLayer, this.DrawLoop, this.gameobject.name + "_GameObject");
+        this.gameobject.stage.l_Draw.addFunction(3, this.DrawPivot, this.gameobject.name + "_Pivot");
+        this.gameobject.stage.l_Draw.addFunction(3, this.DrawName, this.gameobject.name + "_NameTag")
     }
 
-    changeShape ( newShape : (ctx, trans) => {} ) {
-        this.shape = newShape;
+
+    changeDrawFunc(newShape: (ctx, trans: Transform, pen: Pencile) => {}) {
+        this.drawFunc = newShape;
     }
-} 
+}

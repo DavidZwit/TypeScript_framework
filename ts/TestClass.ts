@@ -1,40 +1,33 @@
-class TestClass extends Seed {  
- 
+class TestClass extends Script {
+
     theLight : GameObject;
 	otherLight : Light;
+	text : TextElement;
 
-	constructor () { 
-		
-		super('testClass'); 
- 		
-		this.theLight = new GameObject(ObjectTypes.Shape, "mainLight");
-        GameObject.Instantiate<Light>(this.theLight, new Transform(this.theLight));
-		//this.theLight.pencile.drawName = true;
+	constructor (gameobject : GameObject) { super(gameobject, "TestClass");	}
 
-		this.otherLight = new Light("otherLight", 200);
-		GameObject.Instantiate<Light>(this.otherLight, new Transform(this.otherLight, new Vector2(150, 150)));
-		//this.otherLight.pencile.drawName = true;
+    Start () {
+        this.theLight = new GameObject(ObjectTypes.Shape, "mainLight");
+        GameObject.Instantiate<Light>(this.theLight);
+        this.theLight.pencile.drawName = true;
+        this.theLight.pencile.drawPivot = true;
 
-        
-		this.Update = () => {
+        this.otherLight = new Light("otherLight", 200);
+        GameObject.Instantiate<Light>(this.otherLight);
+        this.otherLight.pencile.drawName = true;
 
-            //this.theLight.Intencity = this.theLight.Intencity < 100 ? this.theLight.Intencity +1 : 0;
-            this.otherLight.Intencity = this.otherLight.Intencity < 50 ? this.otherLight.Intencity +2 : 0;
+        this.text = new TextElement("testText", new Vector2(200, 200), "hallo baas");
+    }
 
-			let speed = .2;
+    Update () {
+        this.otherLight.Intencity = this.otherLight.Intencity < 50 ? this.otherLight.Intencity +2 : 0;
 
-			let xSpeed = new Vector2((Input.getKeyDown(KeyCode.A) == true ? -speed : 0) + (Input.getKeyDown(KeyCode.D) == true ? speed : 0),
-									(Input.getKeyDown(KeyCode.W) == true ? -speed : 0) + (Input.getKeyDown(KeyCode.S) == true ? speed : 0));
+        this.theLight.transform.position = Input.getMouseDragPos(0);
 
-			this.theLight.physics.acceleration.add(xSpeed);
-			
-            return 0;
-        }
-	} 
-} 
- 
-Seed.addSeed(new TestClass()); 
- 
-/** 
-* Add this script (TestClass.js) to the html file 
-*/ 
+        return 0;
+    }
+}
+
+/**
+* Add this script (TestClass.js) to the html file
+*/
